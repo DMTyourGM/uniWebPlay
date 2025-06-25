@@ -1,0 +1,60 @@
+/* Basic reset and styling */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#container {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 2rem 3rem;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    max-width: 400px;
+}
+
+h1 {
+    margin-bottom: 1rem;
+    font-size: 2.5rem;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+}
+
+p {
+    margin-bottom: 2rem;
+    font-size: 1.2rem;
+    line-height: 1.4;
+}
+
+button#startButton {
+    background: #ff6f61;
+    border: none;
+    padding: 0.75rem 2rem;
+    font-size: 1.1rem;
+    border-radius: 30px;
+    cursor: pointer;
+    color: white;
+    box-shadow: 0 4px 15px rgba(255,111,97,0.6);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+button#startButton:hover {
+    background: #ff3b2e;
+    box-shadow: 0 6px 20px rgba(255,59,46,0.8);
+}
+
+/* Canvas for Three.js will be full screen overlay */
+canvas#threeCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 10;
+}
