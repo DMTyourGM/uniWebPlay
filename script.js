@@ -83,4 +83,22 @@ $(document).ready(function () {
             $(this).text('Stop');
         }
     });
+
+    // AJAX for booking form
+    $('#bookingForm').submit(function (e) {
+        e.preventDefault();
+        const formData = $(this).serialize();
+        $.post('book_slot.php', formData, function (response) {
+            $('#responseMessage').text(response.message);
+        }, 'json');
+    });
+
+    // AJAX for report form
+    $('#reportForm').submit(function (e) {
+        e.preventDefault();
+        const formData = $(this).serialize();
+        $.post('report_issue.php', formData, function (response) {
+            $('#responseMessage').text(response.message);
+        }, 'json');
+    });
 });
