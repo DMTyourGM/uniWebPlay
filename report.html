@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UniWebPlay - Report Maintenance Issue</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background: #fff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            max-width: 480px;
+            width: 90%;
+            margin: 40px auto;
+            color: #475569;
+        }
+        h1 {
+            text-align: center;
+            color: #1f2937;
+            margin-bottom: 24px;
+            font-weight: 700;
+            text-shadow: none;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #475569;
+        }
+        input[type="text"],
+        input[type="url"] {
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        input[type="text"]:focus,
+        input[type="url"]:focus {
+            border-color: #3b82f6;
+            outline: none;
+        }
+        .btn {
+            background-color: #3b82f6;
+            border: none;
+            padding: 15px;
+            color: white;
+            font-size: 1.1rem;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #2563eb;
+        }
+        .message {
+            text-align: center;
+            margin-top: 10px;
+            color: #2563eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Report Maintenance Issue</h1>
+        <form id="reportForm" method="POST" action="report_issue.php">
+            <label for="facilityId">Facility ID</label>
+            <input type="text" id="facilityId" name="facilityId" required />
+
+            <label for="photoUrl">Photo URL</label>
+            <input type="url" id="photoUrl" name="photoUrl" required />
+
+            <button type="submit" class="btn">Report Issue</button>
+        </form>
+        <div class="message" id="responseMessage"></div>
+    </div>
+</body>
+</html>
