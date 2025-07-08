@@ -1,104 +1,157 @@
-// script.js
+// script.js - Moved from user_dashboard.php inline JS with enhancements
 
-$(document).ready(function () {
-    let scene, camera, renderer, cube;
-    let animationId;
-    let isAnimating = false;
+// Theme toggle and persistence logic
+const modeToggle = document.getElementById('modeToggle');
+const body = document.body;
 
-    function initThreeJS() {
-        // Create scene
-        scene = new THREE.Scene();
-
-        // Create camera
-        camera = new THREE.PerspectiveCamera(
-            75,
-            window.innerWidth / window.innerHeight,
-            0.1,
-            1000
-        );
-        camera.position.z = 5;
-
-        // Create renderer
-        renderer = new THREE.WebGLRenderer({ alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setClearColor(0x000000, 0); // transparent background
-        renderer.domElement.id = 'threeCanvas';
-        document.body.appendChild(renderer.domElement);
-
-        // Create a cube
-        const geometry = new THREE.BoxGeometry();
-        const material = new THREE.MeshStandardMaterial({ color: 0xff6f61 });
-        cube = new THREE.Mesh(geometry, material);
-        scene.add(cube);
-
-        // Add light
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-        scene.add(ambientLight);
-
-        const pointLight = new THREE.PointLight(0xffffff, 0.8);
-        pointLight.position.set(5, 5, 5);
-        scene.add(pointLight);
-
-        window.addEventListener('resize', onWindowResize, false);
+// Load saved theme from localStorage
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme) {
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        modeToggle.setAttribute('aria-label', 'Switch to dark mode');
+    } else {
+        body.classList.remove('light-mode');
+        modeToggle.setAttribute('aria-label', 'Switch to light mode');
     }
+}
 
-    function onWindowResize() {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-
-        renderer.setSize(window.innerWidth, window.innerHeight);
+modeToggle.addEventListener('click', () => {
+    if (body.classList.contains('light-mode')) {
+        body.classList.remove('light-mode');
+        localStorage.setItem('theme', 'dark');
+        modeToggle.setAttribute('aria-label', 'Switch to light mode');
+    } else {
+        body.classList.add('light-mode');
+        localStorage.setItem('theme', 'light');
+        modeToggle.setAttribute('aria-label', 'Switch to dark mode');
     }
+});
 
-    function animate() {
-        animationId = requestAnimationFrame(animate);
+// Utility function to sanitize text content to prevent XSS
+function sanitizeText(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
 
-        cube.rotation.x += 0.01;
-        cube.rotation.y += 0.01;
+// Show loading spinner for a container element
+function showLoading(container) {
+    container.innerHTML = '<li class="loading">Loading...</li>';
+}
 
-        renderer.render(scene, camera);
+// Show error message for a container element
+function showError(container, message) {
+    container.innerHTML = `<li class="error">${sanitizeText(message)}</li>`;
+}
+
+// Fetch and display user stats with dynamic progress bar calculation
+function fetchUserStats() {
+    fetch(`gamification_api.php?action=user_stats&user_id=${userId}`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('totalPoints').textContent = data.user_stats.total_points;
+                document.getElementById('totalBookings').textContent = data.user_stats.total_bookings;
+                document.getElementById('totalCompetitions').textContent = data.user_stats.total_competitions;
+                document.getElementById('skillLevel').textContent = data.user_stats.skill_level_name || 'N/A';
+
+                // Dynamic progress calculation example
+                const minPoints = data.user_stats.min_points || 0;
+                const maxPoints = data.user_stats.max_points || 100;
+                const currentPoints = data.user_stats.current_points || 0;
+                let progressPercent = 0;
+                if (maxPoints > minPoints) {
+                    progressPercent = ((currentPoints - minPoints) / (maxPoints - minPoints)) * 100;
+                    progressPercent = Math.min(Math.max(progressPercent, 0), 100);
+                }
+                document.getElementById('skillProgress').style.width = progressPercent + '%';
+                document.getElementById('skillProgress').setAttribute('aria-valuenow', progressPercent.toFixed(0));
+            } else {
+                document.getElementById('totalPoints').textContent = 'N/A';
+                document.getElementById('totalBookings').textContent = 'N/A';
+                document.getElementById('totalCompetitions').textContent = 'N/A';
+                document.getElementById('skillLevel').textContent = 'N/A';
+                document.getElementById('skillProgress').style.width = '0%';
+            }
+        })
+        .catch(() => {
+            document.getElementById('totalPoints').textContent = 'N/A';
+            document.getElementById('totalBookings').textContent = 'N/A';
+            document.getElementById('totalCompetitions').textContent = 'N/A';
+            document.getElementById('skillLevel').textContent = 'N/A';
+            document.getElementById('skillProgress').style.width = '0%';
+        });
+}
+
+// Fetch and display user achievements with sanitization and error handling
+function fetchAchievements() {
+    const list = document.getElementById('achievementsList');
+    showLoading(list);
+    fetch(`gamification_api.php?action=user_achievements&user_id=${userId}`)
+        .then(res => res.json())
+        .then(data => {
+            list.innerHTML = '';
+            if (data.success && data.achievements.length > 0) {
+                data.achievements.forEach(ach => {
+                    const li = document.createElement('li');
+                    li.className = 'achievement-item';
+                    li.textContent = `${ach.name} (${ach.points_awarded} pts) - Achieved on ${new Date(ach.achieved_at).toLocaleDateString()}`;
+                    list.appendChild(li);
+                });
+            } else {
+                list.innerHTML = '<li>No achievements yet.</li>';
+            }
+        })
+        .catch(() => {
+            showError(list, 'Error loading achievements');
+        });
+}
+
+// Fetch and display real activity feed with sanitization and error handling
+function fetchActivityFeed() {
+    const list = document.getElementById('activityFeedList');
+    showLoading(list);
+    fetch(`gamification_api.php?action=user_activity_feed&user_id=${userId}`)
+        .then(res => res.json())
+        .then(data => {
+            list.innerHTML = '';
+            if (data.success && data.activities.length > 0) {
+                data.activities.forEach(activity => {
+                    const li = document.createElement('li');
+                    li.className = 'activity-item';
+                    li.textContent = sanitizeText(activity.description);
+                    list.appendChild(li);
+                });
+            } else {
+                list.innerHTML = '<li>No recent activity.</li>';
+            }
+        })
+        .catch(() => {
+            showError(list, 'Error loading activity feed');
+        });
+}
+
+// Show achievement popup notification with accessibility
+function showAchievementPopup(message) {
+    const popup = document.getElementById('achievementPopup');
+    popup.textContent = message;
+    popup.style.display = 'block';
+    popup.setAttribute('role', 'alert');
+    setTimeout(() => {
+        popup.style.display = 'none';
+        popup.removeAttribute('role');
+    }, 5000);
+}
+
+// Initial fetches with loading spinners and error handling
+document.addEventListener('DOMContentLoaded', () => {
+    if (userId === null) {
+        // User not logged in, show message or redirect
+        alert('User not logged in. Please log in to access the dashboard.');
+        return;
     }
-
-    function startAnimation() {
-        if (!isAnimating) {
-            initThreeJS();
-            animate();
-            isAnimating = true;
-        }
-    }
-
-    function stopAnimation() {
-        if (isAnimating) {
-            cancelAnimationFrame(animationId);
-            renderer.domElement.remove();
-            isAnimating = false;
-        }
-    }
-
-    $('#startButton').click(function () {
-        if (isAnimating) {
-            stopAnimation();
-            $(this).text('Start');
-        } else {
-            startAnimation();
-            $(this).text('Stop');
-        }
-    });
-
-    // AJAX for booking form
-    $('#bookingForm').submit(function (e) {
-        e.preventDefault();
-        const formData = $(this).serialize();
-        $.post('book_slot.php', formData, function (response) {
-            $('#responseMessage').text(response.message);
-        }, 'json');
-    });
-
-    // AJAX for report form
-    $('#reportForm').submit(function (e) {
-        e.preventDefault();
-        const formData = $(this).serialize();
-        $.post('report_issue.php', formData, function (response) {
-            $('#responseMessage').text(response.message);
-        }, 'json');
-    });
+    fetchUserStats();
+    fetchAchievements();
+    fetchActivityFeed();
 });

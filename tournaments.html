@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UniWebPlay - Tournaments</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <header class="sticky-header">
+        <div class="header-content">
+            <h1>UniWebPlay</h1>
+            <nav class="navbar">
+                <a href="index.php">Home</a>
+                <a href="booking.html">Book Facility Slot</a>
+                <a href="report.html">Report Issue</a>
+                <a href="account.html">Account</a>
+                <a href="login.html">Login</a>
+                <a href="register.html">Register</a>
+                <button id="colorToggle" aria-label="Toggle Color Theme" class="btn btn-small">Change Color</button>
+            </nav>
+            <button id="modeToggle" aria-label="Toggle Light/Dark Mode" class="mode-toggle">
+                <span id="toggleCircle" class="toggle-circle"></span>
+            </button>
+        </div>
+    </header>
+    <main id="container">
+        <section class="tournament-list">
+            <h2>Upcoming Tournaments</h2>
+            <div class="tournament-cards">
+                <div class="tournament-card">
+                    <h3>Spring Championship 2024</h3>
+                    <p>Compete in pool, chess, and table tennis to win exciting prizes!</p>
+                    <p><strong>Starts:</strong> May 1, 2024</p>
+                    <a href="register.html" class="btn">Register Now</a>
+                </div>
+                <div class="tournament-card">
+                    <h3>Summer Showdown</h3>
+                    <p>Show your skills in carom and board games. Climb the leaderboard!</p>
+                    <p><strong>Starts:</strong> July 15, 2024</p>
+                    <a href="register.html" class="btn">Register Now</a>
+                </div>
+            </div>
+        </section>
+        <section class="leaderboard-link" style="margin-top: 2rem; text-align: center;">
+            <a href="leaderboard.html" class="btn">View Leaderboards</a>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 UniWebPlay - The Ultimate Competitive Recreational Platform</p>
+        <p class="subtitle">Where Champions Are Made</p>
+    </footer>
+</body>
+</html>

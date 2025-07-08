@@ -1,0 +1,23 @@
+background-color: var(--card-bg);
+  padding: 1rem 2rem;
+  box-shadow: var(--shadow-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: var(--border-radius);
+  transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+=======
+header {
+  background-color: var(--card-bg);
+  padding: 1rem 3rem;
+  box-shadow: var(--shadow-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: var(--border-radius);
+  transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}

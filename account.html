@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UniWebPlay - Account Management</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <header>
+        <h1>UniWebPlay</h1>
+        <nav class="navbar">
+            <a href="index.php">Home</a>
+            <a href="booking.html">Book Facility Slot</a>
+            <a href="report.html">Report Issue</a>
+            <a href="account.html">Account</a>
+            <a href="login.html">Login</a>
+            <a href="register.html">Register</a>
+        </nav>
+    </header>
+    <main id="container">
+        <div class="hero">
+            <h2>👤 Account Management</h2>
+            <p>Manage your profile and track your competitive progress</p>
+        </div>
+        
+        <div class="container">
+            <section id="userStats" class="recent-activity">
+                <h2>📊 Your Stats</h2>
+                <div class="activity-grid">
+                    <div class="activity-item">
+                        <strong>Total Points:</strong>
+                        <p><span id="totalPoints">Loading...</span></p>
+                    </div>
+                    <div class="activity-item gold">
+                        <strong>Total Bookings:</strong>
+                        <p><span id="totalBookings">Loading...</span></p>
+                    </div>
+                    <div class="activity-item purple">
+                        <strong>Total Competitions:</strong>
+                        <p><span id="totalCompetitions">Loading...</span></p>
+                    </div>
+                    <div class="activity-item">
+                        <strong>Skill Level:</strong>
+                        <p><span id="skillLevel">Loading...</span></p>
+                    </div>
+                </div>
+            </section>
+
+            <form id="accountForm" enctype="multipart/form-data" method="POST" action="account_update.php" class="form">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required />
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required />
+                <label for="profilePhoto">Profile Photo (optional)</label>
+                <input type="file" id="profilePhoto" name="profilePhoto" accept="image/*" />
+                <button type="submit" class="btn">Update Profile</button>
+                <button type="button" class="skip-photo" id="skipPhotoBtn">Skip Photo Upload</button>
+            </form>
+            <div class="message" id="message"></div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 UniWebPlay - The Ultimate Competitive Recreational Platform</p>
+        <p class="subtitle">Where Champions Are Made</p>
+    </footer>
+    
+    <script>
+        document.getElementById('skipPhotoBtn').addEventListener('click', function () {
+            document.getElementById('profilePhoto').value = '';
+            document.getElementById('message').textContent = 'Profile photo upload skipped.';
+        });
+
+        // For demo, using fixed user_id=1, replace with actual logged-in user id in production
+        const userId = 1;
+
+        function fetchUserStats() {
+            fetch(`gamification_api.php?action=user_stats&user_id=${userId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('totalPoints').textContent = data.user_stats.total_points;
+                        document.getElementById('totalBookings').textContent = data.user_stats.total_bookings;
+                        document.getElementById('totalCompetitions').textContent = data.user_stats.total_competitions;
+                        document.getElementById('skillLevel').textContent = data.user_stats.skill_level_name || 'N/A';
+                    } else {
+                        document.getElementById('totalPoints').textContent = 'N/A';
+                        document.getElementById('totalBookings').textContent = 'N/A';
+                        document.getElementById('totalCompetitions').textContent = 'N/A';
+                        document.getElementById('skillLevel').textContent = 'N/A';
+                    }
+                })
+                .catch(() => {
+                    document.getElementById('totalPoints').textContent = 'N/A';
+                    document.getElementById('totalBookings').textContent = 'N/A';
+                    document.getElementById('totalCompetitions').textContent = 'N/A';
+                    document.getElementById('skillLevel').textContent = 'N/A';
+                });
+        }
+
+        fetchUserStats();
+    </script>
+</body>
+</html>

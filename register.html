@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UniWebPlay - Register</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <header>
+        <h1>UniWebPlay</h1>
+        <nav class="navbar">
+            <a href="index.php">Home</a>
+            <a href="booking.html">Book Facility Slot</a>
+            <a href="report.html">Report Issue</a>
+            <a href="account.html">Account</a>
+            <a href="login.html">Login</a>
+            <a href="register.html">Register</a>
+        </nav>
+    </header>
+    <main id="container">
+        <div class="hero">
+            <h2>🚀 Create Account</h2>
+            <p>Join the ultimate competitive recreational platform!</p>
+        </div>
+        
+        <div class="container">
+            <form id="registerForm" enctype="multipart/form-data" method="POST" action="register.php">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required />
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required />
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required />
+                <label for="profilePhoto">Profile Photo (optional)</label>
+                <input type="file" id="profilePhoto" name="profilePhoto" accept="image/*" />
+                <button type="submit" class="btn">Register</button>
+                <button type="button" class="skip-photo" id="skipPhotoBtn">Skip Photo Upload</button>
+            </form>
+            <div class="message" id="message"></div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 UniWebPlay - The Ultimate Competitive Recreational Platform</p>
+        <p class="subtitle">Where Champions Are Made</p>
+    </footer>
+    
+    <script>
+        document.getElementById('skipPhotoBtn').addEventListener('click', function () {
+            document.getElementById('profilePhoto').value = '';
+            document.getElementById('message').textContent = 'Profile photo upload skipped.';
+        });
+        // Optional: Add AJAX form submission here if desired
+    </script>
+</body>
+</html>

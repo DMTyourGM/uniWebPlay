@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>UniWebPlay - Report an Issue</title>
+    <title>UniWebPlay - Book Facility Slot</title>
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -20,17 +20,19 @@
     </header>
     <main id="container">
         <div class="hero">
-            <h2>🚨 Report an Issue</h2>
-            <p>Help keep our facilities in top condition for everyone!</p>
+            <h2>🎯 Book a Facility Slot</h2>
+            <p>Reserve your preferred facility and start competing!</p>
         </div>
         
         <div class="container">
-            <form id="reportForm" method="POST" action="report_issue.php">
+            <form id="bookingForm" method="POST" action="book_slot.php" class="form">
                 <label for="userId">User ID</label>
                 <input type="text" id="userId" name="userId" required />
-                <label for="issue">Issue Description</label>
-                <textarea id="issue" name="issue" rows="4" required></textarea>
-                <button type="submit" class="btn">Submit Report</button>
+                <label for="facilityId">Facility ID</label>
+                <input type="text" id="facilityId" name="facilityId" required />
+                <label for="slot">Slot (Date and Time)</label>
+                <input type="datetime-local" id="slot" name="slot" required />
+                <button type="submit" class="btn">Book Slot</button>
             </form>
             <div class="message" id="responseMessage"></div>
         </div>

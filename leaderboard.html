@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UniWebPlay - Leaderboards</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <header>
+        <h1>UniWebPlay</h1>
+        <nav class="navbar">
+            <a href="index.php">Home</a>
+            <a href="booking.html">Book Facility Slot</a>
+            <a href="report.html">Report Issue</a>
+            <a href="account.html">Account</a>
+            <a href="login.html">Login</a>
+            <a href="register.html">Register</a>
+        </nav>
+    </header>
+    <main id="container">
+        <div class="hero">
+            <h2>🏆 GLOBAL LEADERBOARDS</h2>
+            <p>See who's dominating the competition</p>
+        </div>
+
+        <!-- Leaderboard Categories -->
+        <section class="leaderboard-categories">
+            <div>
+                <button class="btn" onclick="showLeaderboard('global')" id="btn-global">🌍 Global</button>
+                <button class="btn" onclick="showLeaderboard('pool')" id="btn-pool">🎱 Pool</button>
+                <button class="btn" onclick="showLeaderboard('chess')" id="btn-chess">♟️ Chess</button>
+                <button class="btn" onclick="showLeaderboard('carom')" id="btn-carom">🎯 Carom</button>
+                <button class="btn" onclick="showLeaderboard('table_tennis')" id="btn-table-tennis">🏓 Table Tennis</button>
+                <button class="btn" onclick="showLeaderboard('board_games')" id="btn-board-games">🎲 Board Games</button>
+            </div>
+        </section>
+
+        <!-- Global Leaderboard -->
+        <section id="global-leaderboard" class="leaderboard-section">
+            <h2>🌍 GLOBAL RANKINGS</h2>
+            <div id="leaderboard-content" class="leaderboard-content">
+                <div class="leaderboard-grid">
+                    <!-- Top 3 with special styling -->
+                    <div class="leaderboard-top gold">
+                        <div class="medal">🥇</div>
+                        <div class="player-info">
+                            <h3>Champion Player</h3>
+                            <p>Level 15 • Basketball Master</p>
+                        </div>
+                        <div class="points">15,420 pts</div>
+                    </div>
+                    
+                    <div class="leaderboard-top silver">
+                        <div class="medal">🥈</div>
+                        <div class="player-info">
+                            <h3>Elite Competitor</h3>
+                            <p>Level 12 • Tennis Pro</p>
+                        </div>
+                        <div class="points">12,850 pts</div>
+                    </div>
+                    
+                    <div class="leaderboard-top bronze">
+                        <div class="medal">🥉</div>
+                        <div class="player-info">
+                            <h3>Rising Star</h3>
+                            <p>Level 10 • Football Ace</p>
+                        </div>
+                        <div class="points">10,230 pts</div>
+                    </div>
+
+                    <!-- Regular rankings -->
+                    <div class="leaderboard-entries">
+                        <div class="leaderboard-entry">
+                            <div class="rank">#4</div>
+                            <div class="player-info">
+                                <h4>Sports Enthusiast</h4>
+                                <p>Level 8 • Multi-sport</p>
+                            </div>
+                            <div class="points">8,750 pts</div>
+                        </div>
+                        
+                        <div class="leaderboard-entry blue">
+                            <div class="rank">#5</div>
+                            <div class="player-info">
+                                <h4>Fitness Freak</h4>
+                                <p>Level 7 • Swimming</p>
+                            </div>
+                            <div class="points">7,420 pts</div>
+                        </div>
+                        
+                        <div class="leaderboard-entry green">
+                            <div class="rank">#6</div>
+                            <div class="player-info">
+                                <h4>Court Master</h4>
+                                <p>Level 6 • Basketball</p>
+                            </div>
+                            <div class="points">6,890 pts</div>
+                        </div>
+                        
+                        <div class="leaderboard-entry orange">
+                            <div class="rank">#7</div>
+                            <div class="player-info">
+                                <h4>Team Player</h4>
+                                <p>Level 5 • Football</p>
+                            </div>
+                            <div class="points">5,670 pts</div>
+                        </div>
+                        
+                        <div class="leaderboard-entry red">
+                            <div class="rank">#8</div>
+                            <div class="player-info">
+                                <h4>New Challenger</h4>
+                                <p>Level 4 • Tennis</p>
+                            </div>
+                            <div class="points">4,320 pts</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Your Ranking -->
+        <section class="user-ranking">
+            <h2>🎯 YOUR RANKING</h2>
+            <div class="user-stats-grid">
+                <div class="user-stat">
+                    <h3 class="rank">GLOBAL RANK</h3>
+                    <div class="value">#42</div>
+                </div>
+                <div class="user-stat">
+                    <h3 class="points">POINTS</h3>
+                    <div class="value">2,450</div>
+                </div>
+                <div class="user-stat">
+                    <h3 class="level">LEVEL</h3>
+                    <div class="value">3</div>
+                </div>
+                <div class="user-stat">
+                    <h3 class="next-level">TO NEXT LEVEL</h3>
+                    <div class="value">550</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Actions -->
+        <section class="section-header">
+            <h2>🚀 CLIMB THE RANKS</h2>
+            <div class="button-group">
+                <a href="booking.html" class="btn">🎯 Book Facility</a>
+                <a href="tournaments.html" class="btn">🏆 Join Tournament</a>
+                <a href="challenges.html" class="btn">⚔️ Create Challenge</a>
+                <a href="achievements.html" class="btn">🏅 View Achievements</a>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 UniWebPlay - The Ultimate Competitive Recreational Platform</p>
+        <p class="subtitle">Where Champions Are Made</p>
+    </footer>
+
+    <script>
+        function showLeaderboard(category) {
+            // Remove active class from all buttons
+            document.querySelectorAll('.btn').forEach(btn => {
+                btn.style.background = 'var(--gradient-primary)';
+            });
+            
+            // Add active class to clicked button
+            event.target.style.background = 'var(--gradient-secondary)';
+            
+            // Here you would typically fetch and display different leaderboards
+            // For now, we'll just show a message
+            const content = document.getElementById('leaderboard-content');
+            
+            if (category === 'global') {
+                content.innerHTML = content.innerHTML; // Keep current content
+            } else {
+                content.innerHTML = `
+                    <div style="text-align: center; padding: 3rem;">
+                        <h3 style="color: var(--primary-gold); margin-bottom: 1rem;">${category.toUpperCase().replace('_', ' ')} LEADERBOARD</h3>
+                        <p style="color: var(--text-secondary);">Coming soon! This feature will show rankings for ${category.replace('_', ' ')} competitions.</p>
+                        <div class="loading" style="margin: 2rem auto;"></div>
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize with global leaderboard active
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('btn-global').style.background = 'var(--gradient-secondary)';
+        });
+    </script>
+</body>
+</html> 

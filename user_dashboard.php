@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UniWebPlay - User Dashboard</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- Moved inline CSS to style.css for maintainability -->
+</head>
+<body>
+    <header class="sticky-header">
+        <h1>UniWebPlay - User Dashboard</h1>
+        <nav class="navbar">
+            <a href="index.php">Home</a>
+            <a href="user_dashboard.php">Dashboard</a>
+            <a href="leaderboard.html">Leaderboards</a>
+            <a href="tournaments.html">Tournaments</a>
+            <a href="challenges.html">Challenges</a>
+            <a href="account.html">Account</a>
+            <a href="login.html">Login</a>
+            <a href="register.html">Register</a>
+            <div class="user-profile-dropdown">
+                <img src="uploads/profile_photos/profile_685ea7d22a4285.25274839.jpg" alt="User Avatar" class="user-avatar" />
+                <div class="dropdown-content">
+                    <a href="account.html">Profile</a>
+                    <a href="logout.php">Logout</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <button id="modeToggle" aria-label="Toggle Light/Dark Mode" class="mode-toggle">
+        <span id="toggleCircle" class="toggle-circle"></span>
+    </button>
+    <main class="container">
+        <section id="statsSection">
+            <h2>Your Stats</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Points</h3>
+                    <p id="totalPoints">Loading...</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Bookings</h3>
+                    <p id="totalBookings">Loading...</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Competitions</h3>
+                    <p id="totalCompetitions">Loading...</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Skill Level</h3>
+                    <p id="skillLevel">Loading...</p>
+                    <div class="progress-bar" aria-label="Skill Level Progress">
+                        <div class="progress-bar-fill" id="skillProgress"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="achievementsSection">
+            <h2>Your Achievements</h2>
+            <ul id="achievementsList" class="achievements-list">
+                <li>Loading achievements...</li>
+            </ul>
+        </section>
+        <section id="activityFeedSection">
+            <h2>Activity Feed</h2>
+            <ul id="activityFeedList" class="activity-feed-list">
+                <li>Loading activity...</li>
+            </ul>
+        </section>
+    </main>
+    <div class="achievement-popup" id="achievementPopup"></div>
+    <!-- Moved inline JS to script.js for maintainability -->
+    <script>
+        // Inject dynamic user ID from PHP session
+        const userId = <?php echo isset($_SESSION['user_id']) ? intval($_SESSION['user_id']) : 'null'; ?>;
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

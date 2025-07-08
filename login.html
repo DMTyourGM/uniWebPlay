@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UniWebPlay - Login</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <header>
+        <h1>UniWebPlay</h1>
+        <nav class="navbar">
+            <a href="index.php">Home</a>
+            <a href="booking.html">Book Facility Slot</a>
+            <a href="report.html">Report Issue</a>
+            <a href="account.html">Account</a>
+            <a href="login.html">Login</a>
+            <a href="register.html">Register</a>
+        </nav>
+    </header>
+    <main id="container">
+        <div class="hero">
+            <h2>🔐 Login</h2>
+            <p>Access your competitive profile and continue dominating!</p>
+        </div>
+        
+        <div class="container">
+            <form id="loginForm" method="POST" action="login.php">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required />
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required />
+                <button type="submit" class="btn">Login</button>
+            </form>
+            <div class="message" id="message"></div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 UniWebPlay - The Ultimate Competitive Recreational Platform</p>
+        <p class="subtitle">Where Champions Are Made</p>
+    </footer>
+    
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            fetch('login.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                const messageDiv = document.getElementById('message');
+                if (data.message) {
+                    messageDiv.className = 'message success';
+                    messageDiv.textContent = data.message;
+                    // Redirect to authenticated home page after successful login
+                    setTimeout(() => {
+                        window.location.href = 'home.html';
+                    }, 1000);
+                } else if (data.error) {
+                    messageDiv.className = 'message error';
+                    messageDiv.textContent = data.error;
+                }
+            })
+            .catch(error => {
+                const messageDiv = document.getElementById('message');
+                messageDiv.className = 'message error';
+                messageDiv.textContent = 'An error occurred. Please try again.';
+            });
+        });
+    </script>
+</body>
+</html>
