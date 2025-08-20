@@ -26,6 +26,7 @@
         
         <div class="container">
             <form id="loginForm" method="POST" action="login.php">
+                <input type="hidden" id="csrf_token" name="csrf_token" value="" />
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username" required />
                 <label for="password">Password</label>
