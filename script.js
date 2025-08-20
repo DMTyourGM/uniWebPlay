@@ -1,4 +1,4 @@
-// script.js - Moved from user_dashboard.php inline JS with enhancements
+const userId = <?php echo isset($_SESSION['user_id']) ? json_encode($_SESSION['user_id']) : 'null'; ?>; // Define userId from session
 
 // Theme toggle and persistence logic
 const modeToggle = document.getElementById('modeToggle');

@@ -49,7 +49,7 @@ $profilePhoto = $isLoggedIn && !empty($_SESSION['profile_photo']) ? $_SESSION['p
                     </div>
                 </div>
                 <div class="hero-image">
-                    <img src="https://images.unsplash.com/photo-1508609349937-5ec4ae374ebf?auto=format&fit=crop&w=800&q=80" alt="Competitive Games" />
+<img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDF8fHVuaXZlcnNpdHxlbnwwfHx8fDE2ODI0MjY0MjM&ixlib=rb-4.0.3&q=80&w=1080" alt="University Athletics" />
                 </div>
             </section>
 

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniWebPlay - Enhanced Leaderboards</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="responsive.css">
+    <style>
+        .leaderboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .leaderboard-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .leaderboard-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .tab-button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            background: var(--gradient-primary);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        
+        .tab-button.active {
+            background: var(--gradient-secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .leaderboard-grid {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .leaderboard-item {
+            display: grid;
+            grid-template-columns: 60px 1fr 100px 80px;
+            align-items: center;
+            padding: 1rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+        
+        .leaderboard-item:hover {
+            transform: translateY(-2px);
+        }
+        
+        .rank {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .rank-1 { color: #FFD700; }
+        .rank-2 { color: #C0C0C0; }
+        .rank-3 { color: #CD7F32; }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .user-details h4 {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+        
+        .user-details p {
+            margin: 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .points {
+            text-align: center;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .tier-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .tier-legendary { background: #ff6b6b; color: white; }
+        .tier-master { background: #4ecdc4; color: white; }
+        .tier-expert { background: #45b7d1; color: white; }
+        .tier-advanced { background: #96ceb4; color: white; }
+        .tier-intermediate { background: #feca57; color: white; }
+        .tier-beginner { background: #ddd; color: #333; }
+        
+        .user-ranking-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .ranking-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .stat-item {
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            font-size: 1.2rem;
+            color: #666;
+        }
+        
+        .achievement-popup {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .leaderboard-item {
+                grid-template-columns: 50px 1fr 80px;
+            }
+            
+            .tier-badge {
+                display: none;
+            }
+            
+            .leaderboard-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>UniWebPlay</h1>
+        <nav class="navbar">
+            <a href="index.php">Home</a>
+            <a href="user_dashboard.php">Dashboard</a>
+            <a href="enhanced_leaderboard.html" class="active">Leaderboards</a>
+            <a href="tournaments.html">Tournaments</a>
+            <a href="challenges.html">Challenges</a>
+            <a href="account.html">Account</a>
+        </nav>
+    </header>
+
+    <main class="leaderboard-container">
+        <div class="leaderboard-header">
+            <h1>🏆 Global Leaderboards</h1>
+            <p>Compete with players worldwide and climb the ranks!</p>
+        </div>
+
+        <div class="user-ranking-card" id="userRanking">
+            <h2>Your Ranking</h2>
+            <div class="ranking-stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="userRank">-</div>
+                    <div class="stat-label">Global Rank</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="userPoints">-</div>
+                    <div class="stat-label">Total Points</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="userLevel">-</div>
+                    <div class="stat-label">Level</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="userPercentile">-</div>
+                    <div class="stat-label">Percentile</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="leaderboard-tabs">
+            <button class="tab-button active" onclick="loadLeaderboard('global')">
+                🌍 Global
+            </button>
+            <button class="tab-button" onclick="loadLeaderboard('pool')">
+                🎱 Pool
+            </button>
+            <button class="tab-button" onclick="loadLeaderboard('chess')">
+                ♟️ Chess
+            </button>
+            <button class="tab-button" onclick="loadLeaderboard('carom')">
+                🎯 Carom
+            </button>
+            <button class="tab-button" onclick="loadLeaderboard('table_tennis')">
+                🏓 Table Tennis
+            </button>
+            <button class="tab-button" onclick="loadLeaderboard('board_games')">
+                🎲 Board Games
+            </button>
+        </div>
+
+        <div id="leaderboardContent">
+            <div class="loading">Loading leaderboard...</div>
+        </div>
+    </main>
+
+    <div class="achievement-popup" id="achievementPopup" style="display: none;">
+        <span id="achievementText"></span>
+    </div>
+
+    <script>
+        let currentCategory = 'global';
+        let userId = null;
+
+        // Get user ID from session
+        fetch('gamification_api.php?action=get_username')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    userId = data.user_id;
+                    loadUserRanking();
+                }
+            });
+
+        function loadLeaderboard(category) {
+            currentCategory = category;
+            
+            // Update active tab
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Show loading
+            document.getElementById('leaderboardContent').innerHTML = 
+                '<div class="loading">Loading ' + category.replace('_', ' ') + ' leaderboard...</div>';
+            
+            // Fetch leaderboard data
+            fetch(`enhanced_leaderboard.php?action=get_leaderboard&category=${category}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        displayLeaderboard(data.leaderboard, category);
+                    } else {
+                        document.getElementById('leaderboardContent').innerHTML = 
+                            '<div class="loading">Error loading leaderboard</div>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('leaderboardContent').innerHTML = 
+                        '<div class="loading">Error loading leaderboard</div>';
+                });
+        }
+
+        function displayLeaderboard(leaderboard, category) {
+            const container = document.getElementById('leaderboardContent');
+            
+            if (leaderboard.length === 0) {
+                container.innerHTML = '<div class="loading">No players in this category yet</div>';
+                return;
+            }
+            
+            let html = '<div class="leaderboard-grid">';
+            
+            leaderboard.forEach((player, index) => {
+                const rank = index + 1;
+                const medal = getMedal(rank);
+                const tier = getTier(player.total_points || player.category_points || 0);
+                
+                html += `
+                    <div class="leaderboard-item">
+                        <div class="rank rank-${rank}">${medal}</div>
+                        <div class="user-info">
+                            <img src="uploads/profile_photos/default.jpg" alt="${player.username}" class="user-avatar">
+                            <div class="user-details">
+                                <h4>${player.username}</h4>
+                                <p>${player.total_bookings || 0} bookings • ${player.total_competitions || 0} competitions</p>
+                            </div>
+                        </div>
+                        <div class="points">${player.total_points || player.category_points || 0} pts</div>
+                        <div class="tier-badge tier-${tier.toLowerCase()}">${tier}</div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function loadUserRanking() {
+            if (!userId) return;
+            
+            fetch(`enhanced_leaderboard.php?action=get_user_ranking&user_id=${userId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('userRank').textContent = 
+                            data.ranking.global ? `#${data.ranking.global}` : 'N/A';
+                        document.getElementById('userPoints').textContent = 
+                            data.ranking.total_points || 0;
+                        document.getElementById('userLevel').textContent = 
+                            data.ranking.level || 1;
+                        document.getElementById('userPercentile').textContent = 
+                            data.ranking.percentile ? `${Math.round(data.ranking.percentile)}%` : 'N/A';
+                    }
+                });
+        }
+
+        function getMedal(rank) {
+            switch(rank) {
+                case 1: return '🥇';
+                case 2: return '🥈';
+                case 3: return '🥉';
+                default: return `#${rank}`;
+            }
+        }
+
+        function getTier(points) {
+            if (points >= 10000) return 'Legendary';
+            if (points >= 5000) return 'Master';
+            if (points >= 2500) return 'Expert';
+            if (points >= 1000) return 'Advanced';
+            if (points >= 500) return 'Intermediate';
+            return 'Beginner';
+        }
+
+        // Auto-refresh leaderboard every 30 seconds
+        setInterval(() => {
+            if (currentCategory) {
+                loadLeaderboard(currentCategory);
+            }
+        }, 30000);
+
+        // Initial load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadLeaderboard('global');
+        });
+    </script>
+</body>
+</html>

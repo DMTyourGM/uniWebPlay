@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniWebPlay - Enhanced Facility Booking</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .facility-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 10px 0;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        .facility-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .facility-card.selected {
+            border-color: #007bff;
+            background-color: #f8f9fa;
+        }
+        .time-slot {
+            display: inline-block;
+            padding: 10px 15px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .time-slot.available {
+            background-color: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+        .time-slot.unavailable {
+            background-color: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+            cursor: not-allowed;
+        }
+        .time-slot.selected {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #6c757d;
+        }
+        .error {
+            color: #dc3545;
+            padding: 10px;
+            background-color: #f8d7da;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .success {
+            color: #155724;
+            padding: 10px;
+            background-color: #d4edda;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .amenities-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .amenity-tag {
+            background-color: #e9ecef;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            color: #495057;
+        }
+        .price-display {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #007bff;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>UniWebPlay - Enhanced Facility Booking</h1>
+        <nav class="navbar">
+            <a href="index.php"><i class="fas fa-home"></i> Home</a>
+            <a href="enhanced_booking.html"><i class="fas fa-calendar-plus"></i> Book Facility</a>
+            <a href="report.html"><i class="fas fa-exclamation-triangle"></i> Report Issue</a>
+            <a href="account.html"><i class="fas fa-user"></i> Account</a>
+            <a href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a>
+            <a href="register.html"><i class="fas fa-user-plus"></i> Register</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="hero">
+            <h2><i class="fas fa-calendar-check"></i> Book Your Facility</h2>
+            <p>Choose from our wide range of recreational facilities and book your preferred time slot in real-time!</p>
+        </div>
+
+        <div class="booking-container">
+            <!-- Step 1: Select Facility Type -->
+            <section id="step1" class="booking-step">
+                <h3>Step 1: Select Facility Type</h3>
+                <div class="facility-types-grid" id="facilityTypesGrid">
+                    <div class="loading">Loading facility types...</div>
+                </div>
+            </section>
+
+            <!-- Step 2: Select Facility -->
+            <section id="step2" class="booking-step" style="display: none;">
+                <h3>Step 2: Choose Your Facility</h3>
+                <div id="facilitiesList">
+                    <div class="loading">Loading facilities...</div>
+                </div>
+            </section>
+
+            <!-- Step 3: Select Date -->
+            <section id="step3" class="booking-step" style="display: none;">
+                <h3>Step 3: Select Date</h3>
+                <label for="bookingDate">Choose Date:</label>
+                <input type="date" id="bookingDate" name="bookingDate" min="" required>
+                <div id="dateInfo" class="info-display"></div>
+            </section>
+
+            <!-- Step 4: Select Time Slot -->
+            <section id="step4" class="booking-step" style="display: none;">
+                <h3>Step 4: Select Time Slot</h3>
+                <div id="timeSlotsContainer">
+                    <div class="loading">Loading available time slots...</div>
+                </div>
+            </section>
+
+            <!-- Step 5: Booking Details -->
+            <section id="step5" class="booking-step" style="display: none;">
+                <h3>Step 5: Confirm Booking</h3>
+                <div id="bookingSummary">
+                    <h4>Booking Summary</h4>
+                    <div id="summaryDetails"></div>
+                    <div class="price-display" id="totalPrice"></div>
+                    
+                    <label for="specialRequests">Special Requests (Optional):</label>
+                    <textarea id="specialRequests" name="specialRequests" rows="3" 
+                              placeholder="Any special requirements or requests..."></textarea>
+                    
+                    <button type="button" id="confirmBooking" class="btn btn-primary">
+                        <i class="fas fa-check"></i> Confirm Booking
+                    </button>
+                </div>
+            </section>
+
+            <!-- Booking Form -->
+            <form id="bookingForm" style="display: none;">
+                <input type="hidden" id="selectedFacilityId" name="facilityId">
+                <input type="hidden" id="selectedDate" name="bookingDate">
+                <input type="hidden" id="selectedTime" name="startTime">
+                <input type="hidden" id="selectedDuration" name="durationMinutes" value="60">
+                <input type="hidden" id="userId" name="userId" value="1"> <!-- Replace with actual user ID -->
+            </form>
+        </div>
+
+        <!-- Messages -->
+        <div id="messages"></div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 UniWebPlay - The Ultimate Competitive Recreational Platform</p>
+        <p class="subtitle">Where Champions Are Made</p>
+    </footer>
+
+    <script>
+        // Global variables
+        let selectedFacility = null;
+        let selectedDate = null;
+        let selectedTime = null;
+        let facilities = [];
+        let facilityTypes = [];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFacilityTypes();
+            setupDatePicker();
+            setupEventListeners();
+        });
+
+        // Load facility types
+        async function loadFacilityTypes() {
+            try {
+                const response = await fetch('availability_api.php?action=get_facilities');
+                const data = await response.json();
+                
+                if (data.success) {
+                    facilities = data.facilities;
+                    displayFacilityTypes();
+                } else {
+                    showError('Failed to load facilities: ' + data.message);
+                }
+            } catch (error) {
+                showError('Error loading facilities: ' + error.message);
+            }
+        }
+
+        // Display facility types
+        function displayFacilityTypes() {
+            const typesGrid = document.getElementById('facilityTypesGrid');
+            const types = [...new Set(facilities.map(f => ({
+                name: f.facility_type_name,
+                icon: f.icon,
+                color_code: f.color_code,
+                count: facilities.filter(fac => fac.facility_type_name === f.facility_type_name).length
+            })))];
+
+            typesGrid.innerHTML = types.map(type => `
+                <div class="facility-card" onclick="selectFacilityType('${type.name}')">
+                    <i class="${type.icon}" style="font-size: 2em; color: ${type.color_code};"></i>
+                    <h4>${type.name}</h4>
+                    <p>${type.count} facilities available</p>
+                </div>
+            `).join('');
+        }
+
+        // Select facility type
+        function selectFacilityType(typeName) {
+            const filteredFacilities = facilities.filter(f => f.facility_type_name === typeName);
+            displayFacilities(filteredFacilities);
+            showStep(2);
+        }
+
+        // Display facilities
+        function displayFacilities(facilitiesList) {
+            const facilitiesContainer = document.getElementById('facilitiesList');
+            facilitiesContainer.innerHTML = facilitiesList.map(facility => `
+                <div class="facility-card" onclick="selectFacility(${facility.id})">
+                    <h4>${facility.name}</h4>
+                    <p>${facility.description}</p>
+                    <div class="price-display">$${facility.hourly_rate}/hour</div>
+                    <p><strong>Capacity:</strong> ${facility.capacity} people</p>
+                    <div class="amenities-list">
+                        ${facility.amenities ? facility.amenities.map(amenity => 
+                            `<span class="amenity-tag">${amenity}</span>`
+                        ).join('') : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Select facility
+        function selectFacility(facilityId) {
+            selectedFacility = facilities.find(f => f.id === facilityId);
+            document.getElementById('selectedFacilityId').value = facilityId;
+            
+            // Update summary
+            document.querySelectorAll('.facility-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            event.target.closest('.facility-card').classList.add('selected');
+            
+            showStep(3);
+        }
+
+        // Setup date picker
+        function setupDatePicker() {
+            const dateInput = document.getElementById('bookingDate');
+            const today = new Date();
+            const maxDate = new Date(today);
+            maxDate.setDate(today.getDate() + 30); // Allow booking up to 30 days ahead
+            
+            dateInput.min = today.toISOString().split('T')[0];
+            dateInput.max = maxDate.toISOString().split('T')[0];
+            dateInput.value = today.toISOString().split('T')[0];
+            
+            dateInput.addEventListener('change', function() {
+                selectedDate = this.value;
+                document.getElementById('selectedDate').value = selectedDate;
+                loadAvailableSlots();
+                showStep(4);
+            });
+        }
+
+        // Load available slots
+        async function loadAvailableSlots() {
+            if (!selectedFacility || !selectedDate) return;
+            
+            const container = document.getElementById('timeSlotsContainer');
+            container.innerHTML = '<div class="loading">Loading available time slots...</div>';
+            
+            try {
+                const response = await fetch(`availability_api.php?action=get_available_slots&facility_id=${selectedFacility.id}&date=${selectedDate}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    displayTimeSlots(data.slots);
+                } else {
+                    container.innerHTML = `<div class="error">${data.message}</div>`;
+                }
+            } catch (error) {
+                container.innerHTML = `<div class="error">Error loading slots: ${error.message}</div>`;
+            }
+        }
+
+        // Display time slots
+        function displayTimeSlots(slots) {
+            const container = document.getElementById('timeSlotsContainer');
+            
+            if (slots.length === 0) {
+                container.innerHTML = '<div class="error">No time slots available for this date</div>';
+                return;
+            }
+            
+            container.innerHTML = slots.map(slot => `
+                <div class="time-slot ${slot.available ? 'available' : 'unavailable'}" 
+                     ${slot.available ? `onclick="selectTimeSlot('${slot.time}')` : ''}">
+                    ${slot.time} - ${slot.end_time}
+                    ${slot.available ? `<br><small>$${slot.price}</small>` : '<br><small>Booked</small>'}
+                </div>
+            `).join('');
+        }
+
+        // Select time slot
+        function selectTimeSlot(time) {
+            selectedTime = time;
+            document.getElementById('selectedTime').value = time;
+            
+            document.querySelectorAll('.time-slot').forEach(slot => {
+                slot.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
+            
+            updateBookingSummary();
+            showStep(5);
+        }
+
+        // Update booking summary
+        function updateBookingSummary() {
+            if (!selectedFacility || !selectedDate || !selectedTime) return;
+            
+            const summary = document.getElementById('summaryDetails');
+            const totalPrice = document.getElementById('totalPrice');
+            
+            const duration = 60; // Default 1 hour
+            const price = selectedFacility.hourly_rate;
+            
+            summary.innerHTML = `
+                <p><strong>Facility:</strong> ${selectedFacility.name}</p>
+                <p><strong>Date:</strong> ${new Date(selectedDate).toLocaleDateString()}</p>
+                <p><strong>Time:</strong> ${selectedTime} - ${new Date(new Date('2000-01-01 ' + selectedTime).getTime() + 3600000).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
+                <p><strong>Duration:</strong> ${duration} minutes</p>
+            `;
+            
+            totalPrice.innerHTML = `<i class="fas fa-dollar-sign"></i> Total: $${price.toFixed(2)}`;
+        }
+
+        // Confirm booking
+        document.getElementById('confirmBooking').addEventListener('click', async function() {
+            const formData = new FormData(document.getElementById('bookingForm'));
+            formData.append('special_requests', document.getElementById('specialRequests').value);
+            
+            try {
+                const response = await fetch('enhanced_book_slot.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showSuccess(data.message);
+                    // Reset form after successful booking
+                    setTimeout(() => {
+                        window.location.href = 'user_dashboard.php';
+                    }, 2000);
+                } else {
+                    showError(data.message);
+                }
+            } catch (error) {
+                showError('Error creating booking: ' + error.message);
+            }
+        });
+
+        // Show/hide steps
+        function showStep(stepNumber) {
+            document.querySelectorAll('.booking-step').forEach(step => {
+                step.style.display = 'none';
+            });
+            document.getElementById(`step${stepNumber}`).style.display = 'block';
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Back buttons
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('back-btn')) {
+                    const step = parseInt(e.target.dataset.step);
+                    showStep(step);
+                }
+            });
+        }
+
+        // Utility functions
+        function showError(message) {
+            const messages = document.getElementById('messages');
+            messages.innerHTML = `<div class="error">${message}</div>`;
+            setTimeout(() => messages.innerHTML = '', 5000);
+        }
+
+        function showSuccess(message) {
+            const messages = document.getElementById('messages');
+            messages.innerHTML = `<div class="success">${message}</div>`;
+            setTimeout(() => messages.innerHTML = '', 5000);
+        }
+    </script>
+</body>
+</html>

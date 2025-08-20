@@ -7,90 +7,108 @@
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <header>
-        <h1>UniWebPlay</h1>
-        <nav class="navbar">
-            <a href="index.php">Home</a>
-            <a href="booking.html">Book Facility Slot</a>
-            <a href="report.html">Report Issue</a>
-            <a href="account.html">Account</a>
-            <a href="login.html">Login</a>
-            <a href="register.html">Register</a>
-        </nav>
+    <!-- HEADER -->
+    <header style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px;">
+        <h1 style="margin: 0;">UniWebPlay</h1>
+        <div style="display: flex; align-items: center; gap: 10px;">
+<span id="username" style="color: #fff; font-weight: bold;">Loading...</span>
+            <img src="uploads/profile_photos/profile_68a0cb2aa95e45.65349554.jpeg" 
+                 alt="Profile Photo" 
+                 style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;" />
+        </div>
     </header>
-    <main id="container">
-        <div class="hero">
-            <h2>COMPETE • ACHIEVE • DOMINATE</h2>
-            <p>The Ultimate Competitive Recreational Platform for University Athletes</p>
-        </div>
 
-        <!-- Gamification Dashboard -->
-        <section id="gamificationDashboard">
-            <h2>🏆 YOUR COMPETITIVE DASHBOARD</h2>
-            <div class="dashboard-stats">
-                <div class="stat-card">
-                    <h3>POINTS</h3>
-                    <div id="userPoints" class="stat-value">Loading...</div>
-                    <p class="stat-label">Total Points Earned</p>
-                </div>
-                <div class="stat-card purple">
-                    <h3>RANK</h3>
-                    <div id="userRank" class="stat-value">#--</div>
-                    <p class="stat-label">Global Ranking</p>
-                </div>
-                <div class="stat-card green">
-                    <h3>LEVEL</h3>
-                    <div id="userLevel" class="stat-value">1</div>
-                    <p class="stat-label">Current Level</p>
-                </div>
-            </div>
+    <!-- MAIN -->
+    <main id="container" style="display: flex; justify-content: space-between;">
+        <div style="flex: 1; padding: 20px;">
             
-            <div style="margin-top: 2rem;">
-                <h3 style="color: var(--primary-gold); font-family: var(--font-gaming); margin-bottom: 1rem;">🏅 RECENT ACHIEVEMENTS</h3>
-                <ul id="userAchievements" class="activity-grid">
-                    <li class="activity-item">
-                        <span class="loading"></span>
-                        <span>Loading achievements...</span>
-                    </li>
-                </ul>
+            <!-- Hero -->
+            <div class="hero">
+                <h2>COMPETE • ACHIEVE • DOMINATE</h2>
+                <p>The Ultimate Competitive Recreational Platform for University Athletes</p>
             </div>
-        </section>
 
-        <!-- Competitive Features -->
-        <section class="section-header">
-            <h2>⚡ COMPETITIVE FEATURES</h2>
-            <div class="features">
-                <div class="feature">
-                    <img src="https://img.icons8.com/ios-filled/100/FFD700/trophy.png" alt="Tournaments" />
-                <h3>TOURNAMENTS</h3>
-                <p>Join competitive tournaments and climb the leaderboards. Prove your skills against the best athletes.</p>
-            </div>
-            <div class="feature">
-                <img src="https://img.icons8.com/ios-filled/100/FF6B35/leaderboard.png" alt="Leaderboards" />
-                <h3>LEADERBOARDS</h3>
-                <p>Track your progress with real-time rankings. Compete for the top spots in pool, chess, carom, table tennis, and other board games.</p>
-            </div>
-            <div class="feature">
-                <img src="https://img.icons8.com/ios-filled/100/00FF88/achievement.png" alt="Achievements" />
-                <h3>ACHIEVEMENTS</h3>
-                <p>Unlock badges and achievements as you progress. Show off your accomplishments to the community.</p>
-            </div>
-        </div>
-    </section>
+            <!-- Gamification Dashboard -->
+            <section id="gamificationDashboard">
+                <h2>🏆 YOUR COMPETITIVE DASHBOARD</h2>
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <h3>POINTS</h3>
+                        <div id="userPoints" class="stat-value">Loading...</div>
+                        <p class="stat-label">Total Points Earned</p>
+                    </div>
+                    <div class="stat-card purple">
+                        <h3>RANK</h3>
+                        <div id="userRank" class="stat-value">#--</div>
+                        <p class="stat-label">Global Ranking</p>
+                    </div>
+                    <div class="stat-card green">
+                        <h3>LEVEL</h3>
+                        <div id="userLevel" class="stat-value">1</div>
+                        <p class="stat-label">Current Level</p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 2rem;">
+                    <h3 style="color: var(--primary-gold); font-family: var(--font-gaming); margin-bottom: 1rem;">🏅 RECENT ACHIEVEMENTS</h3>
+                    <ul id="userAchievements" class="activity-grid">
+                        <li class="activity-item">
+                            <span class="loading"></span>
+                            <span>Loading achievements...</span>
+                        </li>
+                    </ul>
+                </div>
+            </section>
 
-        <!-- Quick Actions -->
-        <section class="section-header">
-            <h2>🚀 QUICK ACTIONS</h2>
-            <div class="button-group">
-                <a href="booking.html" class="btn">🎯 Book Facility</a>
-                <a href="tournaments.html" class="btn">🏆 Join Tournament</a>
-                <a href="leaderboard.html" class="btn">📊 View Rankings</a>
-                <a href="challenges.html" class="btn">⚔️ Create Challenge</a>
-            </div>
-        </section>
+            <!-- Profile Section (cleaned up) -->
+            <section class="section-header">
+                <h2>👤 PROFILE</h2>
+                <div style="display: flex; align-items: center; gap: 15px; margin-top: 10px;">
+                    <img src="uploads/profile_photos/profile_68a0cb2aa95e45.65349554.jpeg" 
+                         alt="Profile Photo" 
+                         style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;" />
+                    <div>
+                        <h3 style="margin: 0; color: var(--primary-gold);">Demo User</h3>
+                        <p style="color: var(--text-secondary); margin: 5px 0 0;">Competitive University Athlete</p>
+                    </div>
+                </div>
+            </section>
 
-        <!-- Recent Activity -->
-        <section class="recent-activity">
+            <!-- Competitive Features -->
+            <section class="section-header">
+                <h2>⚡ COMPETITIVE FEATURES</h2>
+                <div class="features">
+                    <div class="feature">
+                        <img src="https://img.icons8.com/ios-filled/100/FFD700/trophy.png" alt="Tournaments" />
+                        <h3>TOURNAMENTS</h3>
+                        <p>Join competitive tournaments and climb the leaderboards. Prove your skills against the best athletes.</p>
+                    </div>
+                    <div class="feature">
+                        <img src="https://img.icons8.com/ios-filled/100/FF6B35/leaderboard.png" alt="Leaderboards" />
+                        <h3>LEADERBOARDS</h3>
+                        <p>Track your progress with real-time rankings. Compete for the top spots in pool, chess, carom, table tennis, and other board games.</p>
+                    </div>
+                    <div class="feature">
+                        <img src="https://img.icons8.com/ios-filled/100/00FF88/achievement.png" alt="Achievements" />
+                        <h3>ACHIEVEMENTS</h3>
+                        <p>Unlock badges and achievements as you progress. Show off your accomplishments to the community.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Actions -->
+            <section class="section-header">
+                <h2>🚀 QUICK ACTIONS</h2>
+                <div class="button-group">
+                    <a href="booking.html" class="btn">🎯 Book Facility</a>
+                    <a href="tournaments.html" class="btn">🏆 Join Tournament</a>
+                    <a href="leaderboard.html" class="btn">📊 View Rankings</a>
+                    <a href="challenges.html" class="btn">⚔️ Create Challenge</a>
+                </div>
+            </section>
+
+            <!-- Recent Activity -->
+            <section class="recent-activity">
                 <h2>🔥 RECENT ACTIVITY</h2>
                 <div id="recentActivity" class="activity-grid">
                     <div class="activity-item">
@@ -107,15 +125,37 @@
                     </div>
                 </div>
             </section>
+        </div>
     </main>
+
+    <!-- FOOTER -->
     <footer>
         <p>&copy; 2024 UniWebPlay - The Ultimate Competitive Recreational Platform</p>
         <p class="subtitle">Where Champions Are Made</p>
     </footer>
     
+    <!-- SCRIPT -->
     <script>
-        // Enhanced gamification dashboard functionality
-        const userId = 1; // Replace with actual logged-in user id
+const userId = 1; // Replace with actual logged-in user id
+
+function fetchUsername() {
+    console.log('Fetching username...');
+    fetch(`gamification_api.php?action=get_username&user_id=${userId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('username').textContent = data.username;
+                document.getElementById('profile-username').textContent = data.username;
+            } else {
+                document.getElementById('username').textContent = 'Error loading username';
+                document.getElementById('profile-username').textContent = 'Error loading username';
+            }
+        })
+        .catch(() => {
+            document.getElementById('username').textContent = 'Error loading username';
+            document.getElementById('profile-username').textContent = 'Error loading username';
+        });
+}
 
         function fetchUserPoints() {
             fetch(`gamification_api.php?action=user_points&user_id=${userId}`)
@@ -123,7 +163,6 @@
                 .then(data => {
                     if (data.success) {
                         document.getElementById('userPoints').textContent = data.points.toLocaleString();
-                        // Calculate level based on points
                         const level = Math.floor(data.points / 1000) + 1;
                         document.getElementById('userLevel').textContent = level;
                     } else {
@@ -178,14 +217,11 @@
                 });
         }
 
-        // Initialize dashboard
         fetchUserPoints();
         fetchUserRank();
         fetchUserAchievements();
 
-        // Add some dynamic effects
         document.addEventListener('DOMContentLoaded', function() {
-            // Add pulse animation to points
             const pointsElement = document.getElementById('userPoints');
             if (pointsElement) {
                 pointsElement.classList.add('pulse');
