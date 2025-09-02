@@ -259,6 +259,18 @@
             <button class="tab-button" onclick="loadLeaderboard('board_games')">
                 🎲 Board Games
             </button>
+            <button class="tab-button" onclick="loadLeaderboard('badminton')">
+                🏸 Badminton
+            </button>
+            <button class="tab-button" onclick="loadLeaderboard('basketball')">
+                🏀 Basketball
+            </button>
+            <button class="tab-button" onclick="loadLeaderboard('volleyball')">
+                🏐 Volleyball
+            </button>
+            <button class="tab-button" onclick="loadLeaderboard('gym')">
+                💪 Gym
+            </button>
         </div>
 
         <div id="leaderboardContent">
@@ -274,15 +286,18 @@
         let currentCategory = 'global';
         let userId = null;
 
-        // Get user ID from session
-        fetch('gamification_api.php?action=get_username')
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    userId = data.user_id;
-                    loadUserRanking();
-                }
-            });
+        // Get user ID from session (this would typically come from your authentication system)
+        function getUserId() {
+            // For demo purposes, we'll try to get it from localStorage or use a default
+            const storedId = localStorage.getItem('user_id');
+            if (storedId) {
+                return parseInt(storedId);
+            }
+            
+            // If no stored ID, use a default for testing
+            // In production, this should come from your authentication system
+            return 1; // Default test user ID
+        }
 
         function loadLeaderboard(category) {
             currentCategory = category;
@@ -298,20 +313,20 @@
                 '<div class="loading">Loading ' + category.replace('_', ' ') + ' leaderboard...</div>';
             
             // Fetch leaderboard data
-            fetch(`enhanced_leaderboard.php?action=get_leaderboard&category=${category}`)
+            fetch(`enhanced_leaderboard.php?action=get_leaderboard&category=${category}&limit=50`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
                         displayLeaderboard(data.leaderboard, category);
                     } else {
                         document.getElementById('leaderboardContent').innerHTML = 
-                            '<div class="loading">Error loading leaderboard</div>';
+                            '<div class="loading">Error loading leaderboard: ' + (data.message || 'Unknown error') + '</div>';
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
                     document.getElementById('leaderboardContent').innerHTML = 
-                        '<div class="loading">Error loading leaderboard</div>';
+                        '<div class="loading">Error loading leaderboard. Please try again.</div>';
                 });
         }
 
@@ -319,29 +334,32 @@
             const container = document.getElementById('leaderboardContent');
             
             if (leaderboard.length === 0) {
-                container.innerHTML = '<div class="loading">No players in this category yet</div>';
+                container.innerHTML = '<div class="loading">No players in this category yet. Be the first to compete!</div>';
                 return;
             }
             
             let html = '<div class="leaderboard-grid">';
             
             leaderboard.forEach((player, index) => {
-                const rank = index + 1;
+                const rank = player.rank_position || (index + 1);
                 const medal = getMedal(rank);
-                const tier = getTier(player.total_points || player.category_points || 0);
+                const points = player.total_points || player.category_points || 0;
+                const tier = getTier(points);
+                const tierClass = 'tier-' + tier.toLowerCase().replace(' ', '-');
                 
                 html += `
                     <div class="leaderboard-item">
                         <div class="rank rank-${rank}">${medal}</div>
                         <div class="user-info">
-                            <img src="uploads/profile_photos/default.jpg" alt="${player.username}" class="user-avatar">
+                            <img src="uploads/profile_photos/default.jpg" alt="${player.username}" class="user-avatar" 
+                                 onerror="this.src='images/default-avatar.png'">
                             <div class="user-details">
                                 <h4>${player.username}</h4>
-                                <p>${player.total_bookings || 0} bookings • ${player.total_competitions || 0} competitions</p>
+                                <p>Level ${player.level || 1} • ${player.total_achievements || 0} achievements</p>
                             </div>
                         </div>
-                        <div class="points">${player.total_points || player.category_points || 0} pts</div>
-                        <div class="tier-badge tier-${tier.toLowerCase()}">${tier}</div>
+                        <div class="points">${points} pts</div>
+                        <div class="tier-badge ${tierClass}">${tier}</div>
                     </div>
                 `;
             });
@@ -351,21 +369,32 @@
         }
 
         function loadUserRanking() {
-            if (!userId) return;
+            userId = getUserId();
+            if (!userId) {
+                document.getElementById('userRanking').style.display = 'none';
+                return;
+            }
             
-            fetch(`enhanced_leaderboard.php?action=get_user_ranking&user_id=${userId}`)
+            fetch(`enhanced_leaderboard.php?action=get_user_ranking&user_id=${userId}&category=global`)
                 .then(response => response.json())
                 .then(data => {
-                    if (data.success) {
+                    if (data.success && data.ranking) {
+                        const ranking = data.ranking;
                         document.getElementById('userRank').textContent = 
-                            data.ranking.global ? `#${data.ranking.global}` : 'N/A';
+                            ranking.global_rank ? `#${ranking.global_rank}` : 'N/A';
                         document.getElementById('userPoints').textContent = 
-                            data.ranking.total_points || 0;
+                            ranking.total_points || 0;
                         document.getElementById('userLevel').textContent = 
-                            data.ranking.level || 1;
+                            ranking.level || 1;
                         document.getElementById('userPercentile').textContent = 
-                            data.ranking.percentile ? `${Math.round(data.ranking.percentile)}%` : 'N/A';
+                            ranking.percentile ? `${Math.round(ranking.percentile)}%` : 'N/A';
+                    } else {
+                        document.getElementById('userRanking').style.display = 'none';
                     }
+                })
+                .catch(error => {
+                    console.error('Error loading user ranking:', error);
+                    document.getElementById('userRanking').style.display = 'none';
                 });
         }
 
@@ -391,12 +420,14 @@
         setInterval(() => {
             if (currentCategory) {
                 loadLeaderboard(currentCategory);
+                loadUserRanking();
             }
         }, 30000);
 
         // Initial load
         document.addEventListener('DOMContentLoaded', () => {
             loadLeaderboard('global');
+            loadUserRanking();
         });
     </script>
 </body>

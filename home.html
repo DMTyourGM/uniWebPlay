@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>UniWebPlay - Competitive Recreational Platform</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="responsive.css" />
 </head>
 <body>
     <!-- HEADER -->
@@ -136,9 +137,25 @@
     
     <!-- SCRIPT -->
     <script>
-const userId = 1; // Replace with actual logged-in user id
+// Get user ID from PHP session or use a default for demo
+<?php
+session_start();
+if (isset($_SESSION['user_id'])) {
+    echo "const userId = " . $_SESSION['user_id'] . ";";
+    echo "const currentUsername = '" . addslashes($_SESSION['username']) . "';";
+} else {
+    echo "const userId = null;";
+    echo "const currentUsername = null;";
+}
+?>
 
 function fetchUsername() {
+    if (!userId) {
+        document.getElementById('username').textContent = 'Please login';
+        document.getElementById('profile-username').textContent = 'Please login';
+        return;
+    }
+    
     console.log('Fetching username...');
     fetch(`gamification_api.php?action=get_username&user_id=${userId}`)
         .then(response => response.json())
@@ -158,6 +175,12 @@ function fetchUsername() {
 }
 
         function fetchUserPoints() {
+            if (!userId) {
+                document.getElementById('userPoints').textContent = 'Login required';
+                document.getElementById('userLevel').textContent = '--';
+                return;
+            }
+            
             fetch(`gamification_api.php?action=user_points&user_id=${userId}`)
                 .then(response => response.json())
                 .then(data => {
@@ -175,12 +198,19 @@ function fetchUsername() {
         }
 
         function fetchUserRank() {
+            if (!userId || !currentUsername) {
+                document.getElementById('userRank').textContent = '#--';
+                return;
+            }
+            
             fetch(`gamification_api.php?action=leaderboard&user_id=${userId}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        const userRank = data.leaderboard.findIndex(user => user.username === 'demo_user') + 1;
+                        const userRank = data.leaderboard.findIndex(user => user.username === currentUsername) + 1;
                         document.getElementById('userRank').textContent = userRank > 0 ? `#${userRank}` : '#--';
+                    } else {
+                        document.getElementById('userRank').textContent = '#--';
                     }
                 })
                 .catch(() => {
@@ -189,6 +219,11 @@ function fetchUsername() {
         }
 
         function fetchUserAchievements() {
+            if (!userId) {
+                document.getElementById('userAchievements').innerHTML = '<li class="activity-item" style="text-align: center; color: var(--text-muted);">Please login to view achievements</li>';
+                return;
+            }
+            
             fetch(`gamification_api.php?action=user_achievements&user_id=${userId}`)
                 .then(response => response.json())
                 .then(data => {
@@ -217,9 +252,21 @@ function fetchUsername() {
                 });
         }
 
-        fetchUserPoints();
-        fetchUserRank();
-        fetchUserAchievements();
+        // Only fetch data if user is logged in
+        if (userId) {
+            fetchUsername();
+            fetchUserPoints();
+            fetchUserRank();
+            fetchUserAchievements();
+        } else {
+            // Show login prompts for non-logged in users
+            document.getElementById('username').textContent = 'Please login';
+            document.getElementById('profile-username').textContent = 'Please login';
+            document.getElementById('userPoints').textContent = 'Login required';
+            document.getElementById('userLevel').textContent = '--';
+            document.getElementById('userRank').textContent = '#--';
+            document.getElementById('userAchievements').innerHTML = '<li class="activity-item" style="text-align: center; color: var(--text-muted);">Please login to view achievements</li>';
+        }
 
         document.addEventListener('DOMContentLoaded', function() {
             const pointsElement = document.getElementById('userPoints');

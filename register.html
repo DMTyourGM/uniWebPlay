@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>UniWebPlay - Register</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="responsive.css" />
 </head>
 <body>
     <header>
@@ -20,40 +21,25 @@
     </header>
     <main id="container">
         <div class="hero">
-            <h2>🚀 Create Account</h2>
-            <p>Join the ultimate competitive recreational platform!</p>
+            <h2>Register for UniWebPlay</h2>
+            <p>Join the ultimate competitive recreational platform</p>
         </div>
-        
         <div class="container">
-            <form id="registerForm" enctype="multipart/form-data" method="POST" action="register.php">
-<input type="hidden" id="csrf_token" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>" />
+            <form id="registerForm" method="POST" action="register.php" class="form">
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username" required />
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" required />
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" required />
-                <label for="confirm_password">Confirm Password</label>
-                <input type="password" id="confirm_password" name="confirm_password" required />
-                <label for="profilePhoto">Profile Photo (optional)</label>
-                <input type="file" id="profilePhoto" name="profilePhoto" accept="image/*" />
                 <button type="submit" class="btn">Register</button>
-                <button type="button" class="skip-photo" id="skipPhotoBtn">Skip Photo Upload</button>
             </form>
-            <div class="message" id="message"></div>
+            <div class="message" id="responseMessage"></div>
         </div>
     </main>
     <footer>
         <p>&copy; 2024 UniWebPlay - The Ultimate Competitive Recreational Platform</p>
         <p class="subtitle">Where Champions Are Made</p>
     </footer>
-    
-    <script>
-        document.getElementById('skipPhotoBtn').addEventListener('click', function () {
-            document.getElementById('profilePhoto').value = '';
-            document.getElementById('message').textContent = 'Profile photo upload skipped.';
-        });
-        // Optional: Add AJAX form submission here if desired
-    </script>
 </body>
 </html>
